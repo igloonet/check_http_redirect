@@ -26,6 +26,7 @@
 use strict;
 use Getopt::Std;
 use LWP::UserAgent;
+use HTTP::Request;
 
 my $plugin_name = 'Nagios check_http_redirect';
 my $VERSION     = '1.00';
@@ -42,7 +43,7 @@ use constant EXIT_UNKNOWN   => 3;
 
 # parse cmd opts
 my %opts;
-getopts('vU:R:t:', \%opts);
+getopts('vU:R:t:H:', \%opts);
 $opts{t} = 5 unless (defined $opts{t});
 if (not (defined $opts{U} ) or not (defined $opts{R} )) {
     print "ERROR: INVALID USAGE\n";
@@ -60,7 +61,16 @@ $ua->parse_head(0);
 $ua->timeout($opts{t});
 $ua->max_redirect(0);
 
-my $response = $ua->get($opts{U});
+my $request = new HTTP::Request('GET', $opts{U});
+
+if (defined $opts{H})
+{
+    $request->header('Host', $opts{H});
+}
+
+#DEBUG:  print $request->as_string;
+my $response = $ua->request($request);
+#DEBUG:  print $response->as_string;
 
 if ($response->is_success or $response->is_error)
 {
@@ -101,7 +111,10 @@ sub HELP_MESSAGE
     --version   shows version information
 
     -U          URL to retrieve (http or https)
-    -R      URL that must be equal to Header Location Redirect URL
+    -R          URL that must be equal to Header Location Redirect URL
+    -H          Optional host attribute, useful if you are querying
+                virtual host. If using, URL to retrieve should contain the real host
+                name or IP of the webserver.
     -t          Timeout in seconds to wait for the URL to load. If the page fails to load,
                 $plugin_name will exit with UNKNOWN state (default 60)
 
