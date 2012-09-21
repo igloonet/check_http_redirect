@@ -54,7 +54,7 @@ my $status = EXIT_OK;
 
 my $ua = LWP::UserAgent->new;
 
-$ua->agent('Redirect Bot ' . $VERSION);
+$ua->agent('check_http_redirect' . $VERSION);
 $ua->protocols_allowed( [ 'http', 'https'] );
 $ua->parse_head(0);
 $ua->timeout($opts{t});
