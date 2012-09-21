@@ -11,12 +11,12 @@
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation; either version 2 of the License, or
 #     (at your option) any later version.
-# 
+#
 #     This program is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #     GNU General Public License for more details.
-# 
+#
 #     You should have received a copy of the GNU General Public License
 #     along with Opsview; if not, write to the Free Software
 #     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
@@ -62,9 +62,9 @@ $ua->max_redirect(0);
 
 my $response = $ua->get($opts{U});
 
-if ($response->is_success or $response->is_error) 
+if ($response->is_success or $response->is_error)
 {
-    print "REDIRECT ERROR: Current HTTP response status line: ", $response->status_line, ". Check this page: $opts{U}";
+    print "REDIRECT ERROR: Current HTTP response status line: ", $response->status_line, ". Check this page: $opts{U}\n";
     $status = EXIT_CRITICAL;
 }
 else
@@ -73,12 +73,12 @@ else
     {
 	if ( $response->header("Location") =~ $opts{R} )
 	{
-	    print "REDIRECT OK: ",$response->status_line, " ", $response->header("Location");
+	    print "REDIRECT OK: ", $response->status_line, " ", $response->header("Location"), "\n";
 	    $status = EXIT_OK;
 	}
 	else
 	{
-	    print "REDIRECT WARNING: Location is invalid: ",$response->status_line, " ", $response->header("Location");
+	    print "REDIRECT WARNING: Location is invalid: ",$response->status_line, " ", $response->header("Location"), "\n";
 	    $status = EXIT_WARNING;
 	}
     }
@@ -91,18 +91,18 @@ else
 
 exit $status;
 
-sub HELP_MESSAGE 
+sub HELP_MESSAGE
 {
 	print <<EOHELP
  	Retrieve an http/s url and checks its header for a given redirects.
  	If the redirect exists and equal to the redirect you entered then exits with OK, otherwise exits with WARNING (if not equal) or CRITICAL ( if doesn't exist)
-	
+
 	--help      shows this message
 	--version   shows version information
 
 	-U          URL to retrieve (http or https)
 	-R	    URL that must be equal to Header Location Redirect URL
-	-t          Timeout in seconds to wait for the URL to load. If the page fails to load, 
+	-t          Timeout in seconds to wait for the URL to load. If the page fails to load,
 	            $plugin_name will exit with UNKNOWN state (default 60)
 
 EOHELP
@@ -110,7 +110,7 @@ EOHELP
 }
 
 
-sub VERSION_MESSAGE 
+sub VERSION_MESSAGE
 {
 	print <<EOVM
 $plugin_name v. $VERSION
