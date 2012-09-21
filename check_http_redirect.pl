@@ -6,6 +6,7 @@
 #   if the redirect exists and equal to the redirect you entered then exits with OK, otherwise exits with WARNING (if not equal) or CRITICAL ( if doesn't exist)
 #
 # Copyright 2009, Eugene L Kovalenja, http://www.purple.org.ua/
+# Copyright 2012, Ruslan Kabalin, Lancaster University, UK
 # Licensed under GPLv2
 #     This program is free software; you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
@@ -29,7 +30,7 @@ use LWP::UserAgent;
 use HTTP::Request;
 
 my $plugin_name = 'Nagios check_http_redirect';
-my $VERSION     = '1.00';
+my $VERSION     = '1.01';
 
 # getopt module config
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
@@ -128,6 +129,7 @@ sub VERSION_MESSAGE
     print <<EOVM
 $plugin_name v. $VERSION
 Copyright 2009, Eugene L Kovalenja, http://www.purple.org.ua/ - Licensed under GPLv2
+Copyright 2012, Ruslan Kabalin, Lancaster University, UK - Licensed under GPLv2
 EOVM
 ;
 }
