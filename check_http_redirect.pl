@@ -3,7 +3,8 @@
 #------------------------------------------------------------------------------
 # Nagios check_http_redirect
 #   retrieve an http/s url and checks its header for a given redirects
-#   if the redirect exists and equal to the redirect you entered then exits with OK, otherwise exits with WARNING (if not equal) or CRITICAL ( if doesn't exist)
+#   if the redirect exists and equal to the redirect you entered then exits with OK,
+#   otherwise exits with WARNING (if not equal) or CRITICAL ( if doesn't exist)
 #
 # Copyright 2009, Eugene L Kovalenja, http://www.purple.org.ua/
 # Copyright 2012, Ruslan Kabalin, Lancaster University, UK
@@ -30,7 +31,7 @@ use LWP::UserAgent;
 use HTTP::Request;
 
 my $plugin_name = 'Nagios check_http_redirect';
-my $VERSION     = '1.01';
+my $VERSION     = '1.02';
 
 # getopt module config
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
@@ -82,7 +83,7 @@ else
 {
     if ($response->is_redirect)
     {
-        if ( $response->header("Location") =~ $opts{R} )
+        if ( $response->header("Location") =~ $opts{R} || $response->header("Location") eq $opts{R} )
         {
             print "REDIRECT OK: ", $response->status_line, " ", $response->header("Location"), "\n";
             $status = EXIT_OK;
@@ -113,6 +114,7 @@ sub HELP_MESSAGE
 
     -U          URL to retrieve (http or https)
     -R          URL that must be equal to Header Location Redirect URL
+                Supports exact string or regular expression.
     -H          Optional host attribute, useful if you are querying
                 virtual host. If using, URL to retrieve should contain the real host
                 name or IP of the webserver.
